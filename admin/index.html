@@ -41,8 +41,8 @@
     .btn-danger-c:hover{background:var(--error);color:white!important;}
 
     /* ── LOGIN ── */
-    #loginScreen{position:fixed;inset:0;background:var(--negro);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
-    .login-card{background:var(--negro-card);border:1px solid var(--borde);border-radius:12px;padding:36px 30px;width:100%;max-width:380px;text-align:center;}
+    #loginScreen{position:fixed;inset:0;background:linear-gradient(135deg,#2D1F4E,#4A2D7A);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;}
+    .login-card{background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:36px 30px;width:100%;max-width:380px;text-align:center;}
     .login-logo{width:80px;height:80px;object-fit:contain;mix-blend-mode:lighten;margin-bottom:14px;}
 
     /* ── LAYOUT ── */
@@ -171,17 +171,17 @@
 <div id="loginScreen">
   <div class="login-card">
     <img class="login-logo" id="loginLogo" src="" alt="Velvet Bloom Studio">
-    <p class="eyebrow mb-1">Panel Administrativo</p>
-    <h1 class="font-serif text-dorado mb-1" style="font-size:1.6rem;">Velvet Bloom Studio</h1>
-    <p style="font-size:0.78rem;color:var(--texto-muted);margin-bottom:22px;">Acceso restringido</p>
-    <div id="loginError" style="display:none;background:rgba(201,123,123,0.12);border:1px solid var(--error);color:var(--error);padding:9px 12px;border-radius:4px;font-size:0.78rem;margin-bottom:14px;"></div>
+    <p style="font-size:0.64rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:6px;">Panel Administrativo</p>
+    <h1 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:white;margin-bottom:4px;">Velvet Bloom Studio</h1>
+    <p style="font-size:0.78rem;color:rgba(255,255,255,0.6);margin-bottom:22px;">Acceso restringido</p>
+    <div id="loginError" style="display:none;background:rgba(201,123,123,0.2);border:1px solid rgba(201,123,123,0.5);color:#ffaaaa;padding:9px 12px;border-radius:8px;font-size:0.78rem;margin-bottom:14px;"></div>
     <div class="mb-3 text-start">
-      <label class="form-label-c">Correo electrónico</label>
-      <input type="email" class="form-control" id="loginEmail" placeholder="admin@nailsstudio.com" onkeydown="if(event.key==='Enter')loginWithEmail()">
+      <label class="form-label-c" style="color:rgba(255,255,255,0.7);">Correo electrónico</label>
+      <input type="email" class="form-control" id="loginEmail" placeholder="tu@correo.com" style="background:rgba(255,255,255,0.12)!important;border-color:rgba(255,255,255,0.2)!important;color:white!important;" onkeydown="if(event.key==='Enter')loginWithEmail()">
     </div>
     <div class="mb-3 text-start">
-      <label class="form-label-c">Contraseña</label>
-      <input type="password" class="form-control" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginWithEmail()">
+      <label class="form-label-c" style="color:rgba(255,255,255,0.7);">Contraseña</label>
+      <input type="password" class="form-control" id="loginPass" placeholder="••••••••" style="background:rgba(255,255,255,0.12)!important;border-color:rgba(255,255,255,0.2)!important;color:white!important;" onkeydown="if(event.key==='Enter')loginWithEmail()">
     </div>
     <button class="btn-gold w-100 justify-content-center mb-3" onclick="loginWithEmail()">Ingresar ✦</button>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div style="flex:1;height:1px;background:var(--borde);"></div><span style="font-size:0.7rem;color:var(--texto-muted);">o</span><div style="flex:1;height:1px;background:var(--borde);"></div></div>
@@ -523,12 +523,12 @@
   import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, setDoc, query, where, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   import { getAuth, onAuthStateChanged, signInWithPopup, signInWithEmailAndPassword, signOut, updatePassword, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   const app = initializeApp({
-    apiKey:"AIzaSyCj_wF-627mJPQVXmylJdks9bZESmwwm2A",
-    authDomain:"nails-studio-3687f.firebaseapp.com",
-    projectId:"nails-studio-3687f",
-    storageBucket:"nails-studio-3687f.firebasestorage.app",
-    messagingSenderId:"408592707230",
-    appId:"1:408592707230:web:b08083604f689d76b4958f"
+    apiKey:"AIzaSyABXwKNvwjU1hyH67nBBJxPbq1v9F65CzI",
+    authDomain:"velvet-bloom-studio.firebaseapp.com",
+    projectId:"velvet-bloom-studio",
+    storageBucket:"velvet-bloom-studio.firebasestorage.app",
+    messagingSenderId:"996275107401",
+    appId:"1:996275107401:web:b08083604f689d76b4958f"
   });
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();

@@ -499,7 +499,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn-outline-vb" style="padding:10px 22px;" id="btnBack" onclick="goStep(Math.max(1,currentStep-1))" style="display:none;">← Atrás</button>
+        <button class="btn-outline-vb" style="padding:10px 22px;" id="btnBack" onclick="goStep(Math.max(1,currentStep-1))">← Atrás</button>
         <button class="btn-primary-vb" id="btnNext" onclick="goStep(currentStep+1)">Revisar →</button>
         <button class="btn-primary-vb" id="btnConfirm" style="display:none;" onclick="confirmBooking()">✦ Confirmar Cita</button>
       </div>
@@ -514,12 +514,12 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, getDocs, addDoc, query, where, orderBy, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
   const app = initializeApp({
-    apiKey:"AIzaSyCj_wF-627mJPQVXmylJdks9bZESmwwm2A",
-    authDomain:"nails-studio-3687f.firebaseapp.com",
-    projectId:"nails-studio-3687f",
-    storageBucket:"nails-studio-3687f.firebasestorage.app",
-    messagingSenderId:"408592707230",
-    appId:"1:408592707230:web:b08083604f689d76b4958f"
+    apiKey:"AIzaSyABXwKNvwjU1hyH67nBBJxPbq1v9F65CzI",
+    authDomain:"velvet-bloom-studio.firebaseapp.com",
+    projectId:"velvet-bloom-studio",
+    storageBucket:"velvet-bloom-studio.firebasestorage.app",
+    messagingSenderId:"996275107401",
+    appId:"1:996275107401:web:b08083604f689d76b4958f"
   });
   window._fb = {
     db:getFirestore(app),
@@ -657,6 +657,8 @@ function toggleCart(id){
   const idx=cart.findIndex(c=>c.id===id);
   if(idx>-1) cart.splice(idx,1); else cart.push({id:s.id,name:s.nombre,price:s.precio,duration:s.duracion,type:'service'});
   allServices.forEach(s=>{const btn=document.getElementById(`cartBtn-${s.id}`);if(!btn)return;const inCart=cart.some(c=>c.id===s.id);btn.className=`btn-add-svc ${inCart?'added':''}`;btn.textContent=inCart?'✓ En mi cita':'+ Agregar';});
+  // Refresh step 2 if modal is open on that step
+  if(currentStep===2) goStep(2);
 }
 
 // ── BOOKING MODAL ──
@@ -686,7 +688,10 @@ function goStep(step){
   if(step===2){
     const svcs=cart.filter(c=>c.type==='service');
     const items=document.getElementById('bookCartItems');
-    items.innerHTML=svcs.length?svcs.map(i=>`<div class="d-flex justify-content-between align-items-center py-2" style="border-bottom:1px solid var(--borde);font-size:0.84rem;"><span>💅 ${i.name}</span><span style="color:var(--lila);font-weight:600;">$${Number(i.price).toLocaleString('es-CO')}</span></div>`).join(''):`<p style="color:var(--texto-muted);font-size:0.82rem;">No has agregado servicios aún.</p>`;
+    // Show cart items + all services to add/remove
+    const cartHtml=svcs.length?svcs.map(i=>`<div class="d-flex justify-content-between align-items-center py-2" style="border-bottom:1px solid var(--borde);font-size:0.84rem;"><span>💅 ${i.name}</span><div class="d-flex align-items-center gap-2"><span style="color:var(--lila);font-weight:600;">$${Number(i.price).toLocaleString('es-CO')}</span><button onclick="toggleCart('${i.id}')" style="background:rgba(192,132,160,0.1);border:1px solid var(--malva);color:var(--malva);border-radius:20px;padding:2px 10px;font-size:0.68rem;cursor:pointer;">✕</button></div></div>`).join(''):`<p style="color:var(--texto-muted);font-size:0.82rem;margin-bottom:8px;">No has agregado servicios aún. Agrega uno abajo.</p>`;
+    const allSvcsHtml=allServices.filter(s=>!cart.some(c=>c.id===s.id)).map(s=>`<div class="d-flex justify-content-between align-items-center py-2" style="border-bottom:1px solid var(--borde);font-size:0.82rem;"><span style="color:var(--texto-muted);">💅 ${s.nombre} <span style="font-size:0.72rem;">(${durLabel(s.duracion||60)})</span></span><button onclick="toggleCart('${s.id}')" style="background:var(--lila-pale);border:1px solid var(--borde);color:var(--lila);border-radius:20px;padding:2px 10px;font-size:0.68rem;cursor:pointer;">+ Agregar</button></div>`).join('');
+    items.innerHTML=cartHtml+(allSvcsHtml?`<p style="font-size:0.66rem;letter-spacing:1px;text-transform:uppercase;color:var(--lila-mid);margin:10px 0 4px;">Agregar más servicios</p>`+allSvcsHtml:'');
   }
 }
 
@@ -769,7 +774,7 @@ async function selectBookDate(ds,dow){
   const past=ds===todayStr?curMin:undefined;
   const slots=genSlots(sched.o,sched.c,30,totalDur,blocked,past);
   grid.innerHTML=slots.map(s=>`<div class="time-slot ${s.blocked?'blocked':''}" ${!s.blocked?`onclick="selectBookTime('${s.time}',this)"`:''}">${t12(s.time)}</div>`).join('');
-  document.getElementById('btnStep1').disabled=false;
+  // slot selected
 }
 
 function selectBookTime(time,el){
